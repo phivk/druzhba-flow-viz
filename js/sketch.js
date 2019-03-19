@@ -282,6 +282,7 @@ function setup() {
     playing: true,
     blob_size: 64,
     blob_length: 20,
+    blob_amount: 3,
     v0_x: 0.2 * windowWidth,
     v0_y: 0.8 * windowHeight,
     v3_x: 0.8 * windowWidth,
@@ -302,10 +303,11 @@ function setup() {
   // init GUI:       prop,        min,   max,            step, value
   set_slider_params('blob_size',   1,     256,            1,    state.blob_size);
   set_slider_params('blob_length', 1,     100,            1,    state.blob_length);
-  set_slider_params('v0_x',        0,     windowWidth,    1,    state.v0_x);
-  set_slider_params('v0_y',        0,     windowHeight,   1,    state.v0_y);
-  set_slider_params('v3_x',        0,     windowWidth,    1,    state.v3_x);
-  set_slider_params('v3_y',        0,     windowHeight,   1,    state.v3_y);
+  set_slider_params('blob_amount', 1,     10,             1,    state.blob_amount);
+  set_slider_params('v0_x',        0,     windowWidth,    10,   state.v0_x);
+  set_slider_params('v0_y',        0,     windowHeight,   10,   state.v0_y);
+  set_slider_params('v3_x',        0,     windowWidth,    10,   state.v3_x);
+  set_slider_params('v3_y',        0,     windowHeight,   10,   state.v3_y);
 
   
   let a = createVector(state.v0_x,       state.v0_y);
@@ -323,10 +325,10 @@ function draw() {
     
   }
   background(200, 100);
-  
-  curve.drawBlobs(t);
-  curve.drawBlobs(t-(1/3));
-  curve.drawBlobs(t-(2/3));
+
+  for (var i = 0; i < state.blob_amount; i++) {
+    curve.drawBlobs(t - i/state.blob_amount);
+  }
 }
 
 function windowResized() {
