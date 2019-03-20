@@ -21,7 +21,8 @@ function BlobCurve(a, b, c, d, blob_length, blob_size) {
     fill(0, 255 * intensity);
   }
 
-  this.drawBlobs = function (t) {
+  this.getCurrentBlobs = function (t) {
+    let blobs = [];
     for (var j = 0; j < state.blob_length; j += 1) {
       let index = Math.round(t * 100) - j;
       if (index < 0) {
@@ -31,15 +32,24 @@ function BlobCurve(a, b, c, d, blob_length, blob_size) {
         }
       }
       let blobPos = this.beziercurve.vpoints[index];
-      
       let blob_intensity = 1 - (j / state.blob_length);
-      this.blobStyle(blob_intensity);
-      
+      blobs.push({
+          x: blobPos.x, 
+          y: blobPos.y,
+          intensity: blob_intensity,         
+      });
+    }
+    return blobs;
+  }
+
+  this.drawBlobs = function (blobs) {
+    for (var i = 0; i < blobs.length; i++) {
+      this.blobStyle(blobs[i]['intensity']);
       ellipse(
-        blobPos.x, 
-        blobPos.y,
-        blob_intensity * state.blob_size, 
-        blob_intensity * state.blob_size
+        blobs[i].x, 
+        blobs[i].y,
+        blobs[i].intensity * state.blob_size,
+        blobs[i].intensity * state.blob_size,
       );
     }
   }
@@ -49,6 +59,7 @@ function BlobCurve(a, b, c, d, blob_length, blob_size) {
   }
   
   this.draw = function (t) {
-    this.drawBlobs(t); 
+    let blobs = this.getCurrentBlobs(t);
+    this.drawBlobs(blobs); 
   }
 }

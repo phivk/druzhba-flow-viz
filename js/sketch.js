@@ -55,7 +55,8 @@ function draw() {
   background(200, 100);
 
   for (var i = 0; i < state.blob_amount; i++) {
-    blobCurve.drawBlobs(t - i/state.blob_amount);
+    let blobs = blobCurve.getCurrentBlobs(t - i/state.blob_amount);
+    blobCurve.drawBlobs(blobs);
   }
 }
 
