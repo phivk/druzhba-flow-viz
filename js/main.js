@@ -1,16 +1,21 @@
 //global
-let blobCurve;
 let t = 0.0;
 let tStep = 1 / 100;
-let state, urlParams, urlState;
+let state;
+let blobCurve;
 
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  background(255, 100);
+let windowWidth, windowHeight;
+let canvas, ctx;
+
+function init () {
+  canvas = document.getElementById('the-canvas');
+  canvas.width = windowWidth = window.innerWidth;
+  canvas.height = windowHeight = window.innerHeight;
+  ctx = canvas.getContext('2d');
 
   state = {
     playing: true,
-    blob_size: 64,
+    blob_size: 32,
     blob_length: 20,
     blob_amount: 3,
     v0_x: 0.2 * windowWidth,
@@ -39,12 +44,13 @@ function setup() {
   set_slider_params('v3_x',        0,     windowWidth,    10,   state.v3_x);
   set_slider_params('v3_y',        0,     windowHeight,   10,   state.v3_y);
 
-  
   let a = createVector(state.v0_x,       state.v0_y);
   let b = createVector(state.v0_x + 200, state.v0_y);
   let c = createVector(state.v3_x - 200, state.v3_y);
   let d = createVector(state.v3_x,       state.v3_y);
   blobCurve = new BlobCurve(a, b, c, d, 50, state.blob_size);
+
+  window.requestAnimationFrame(draw);
 }
 
 function draw() {
@@ -53,19 +59,42 @@ function draw() {
     if (t > 1.0) t = 0.0;
     // Include drawing statements in this conditional for smoother trailing effect
   }
-    
-  background(200, 77);
+  
+  // clear canvas
+  ctx.fillStyle = 'rgba(200, 200, 200, 0.3)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  // draw blobs
   for (var i = 0; i < state.blob_amount; i++) {
     let blobs = blobCurve.getCurrentBlobs(t - i/state.blob_amount);
-    blobCurve.drawBlobs(blobs);
+    drawBlobs(ctx, blobs);
   }
+
+  window.requestAnimationFrame(draw);
+}
+
+function drawBlobs (ctx, blobs) {
+  for (var i = 0; i < blobs.length; i++) {
+    drawBlob(ctx, blobs[i]);
+  }
+}
+
+function drawBlob(ctx, blob) {
+  ctx.fillStyle = 'rgba(0, 0, 0, '+blob.intensity+')';
+  ctx.beginPath();
+  ctx.arc(
+    blob.x,
+    blob.y,
+    blob.intensity * state.blob_size,
+    0,
+    Math.PI * 2
+  );
+  ctx.fill();
 }
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
-
 function keyTyped() {
   if (key === ' ') {
     state.playing = !state.playing;

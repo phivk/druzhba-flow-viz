@@ -44,7 +44,7 @@ function BlobCurve(a, b, c, d, blob_length, blob_size) {
 
   this.drawBlobs = function (blobs) {
     for (var i = 0; i < blobs.length; i++) {
-      this.blobStyle(blobs[i]['intensity']);
+      this.blobStyle(blobs[i].intensity);
       ellipse(
         blobs[i].x, 
         blobs[i].y,

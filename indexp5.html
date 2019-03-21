@@ -14,16 +14,14 @@
       .bottom-2 {bottom: 0.5rem}
       .left-2 {left: 0.5rem}
       .w3 {width: 5rem;}
-      #defaultCanvas0 {display: none;}
     </style>
     <script src="js/vendor/p5.min.js"></script>
     <script src="js/sketchgui.js"></script>
     <script src="js/beziercurve.js"></script>
     <script src="js/blobcurve.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/sketch.js"></script>
   </head>
-  <body class="sans-serif" onload="init();">
-    <canvas id="the-canvas"></canvas>
+  <body class="sans-serif">
     <div class="absolute top-2 left-2">
       <div><span class="dib w3">blob_size</span>   <input type="range" class="dib slider blob_size"   oninput="set_state('blob_size', this.value)"    onchange="set_state('blob_size',   this.value)"></div>
       <div><span class="dib w3">blob_length</span> <input type="range" class="dib slider blob_length" oninput="set_state('blob_length',  this.value)" onchange="set_state('blob_length', this.value)"></div>
