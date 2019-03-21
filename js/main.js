@@ -21,7 +21,13 @@ function init () {
     v0_x: 0.2 * windowWidth,
     v0_y: 0.8 * windowHeight,
     v3_x: 0.8 * windowWidth,
-    v3_y: 0.2 * windowHeight
+    v3_y: 0.2 * windowHeight,
+    debug: false,
+    debugRadius: 10,
+    mouseOver: null,
+    mouseLocked: null,
+    mouseOffsetX: 0,
+    mouseOffsetY: 0,
   };
 
   // get URL Parameters and merge with state
@@ -39,10 +45,6 @@ function init () {
   set_slider_params('blob_size',   1,     256,            1,    state.blob_size);
   set_slider_params('blob_length', 1,     100,            1,    state.blob_length);
   set_slider_params('blob_amount', 1,     10,             1,    state.blob_amount);
-  set_slider_params('v0_x',        0,     windowWidth,    10,   state.v0_x);
-  set_slider_params('v0_y',        0,     windowHeight,   10,   state.v0_y);
-  set_slider_params('v3_x',        0,     windowWidth,    10,   state.v3_x);
-  set_slider_params('v3_y',        0,     windowHeight,   10,   state.v3_y);
 
   let a = createVector(state.v0_x,       state.v0_y);
   let b = createVector(state.v0_x + 200, state.v0_y);
@@ -70,7 +72,47 @@ function draw() {
     drawBlobs(ctx, blobs);
   }
 
+  // draw debug
+  if (state.debug) {
+    drawLine(
+      ctx,
+      blobCurve.beziercurve.v0.x, 
+      blobCurve.beziercurve.v0.y,
+      blobCurve.beziercurve.v1.x, 
+      blobCurve.beziercurve.v1.y,
+      '#FFF'
+    );
+    drawLine(
+      ctx,
+      blobCurve.beziercurve.v2.x, 
+      blobCurve.beziercurve.v2.y,
+      blobCurve.beziercurve.v3.x, 
+      blobCurve.beziercurve.v3.y,
+      '#FFF'
+    );
+    
+    drawCircle(ctx, blobCurve.beziercurve.v0.x, blobCurve.beziercurve.v0.y, state.debugRadius, '#F00');
+    drawCircle(ctx, blobCurve.beziercurve.v1.x, blobCurve.beziercurve.v1.y, state.debugRadius, '#00F');
+    drawCircle(ctx, blobCurve.beziercurve.v2.x, blobCurve.beziercurve.v2.y, state.debugRadius, '#00F');
+    drawCircle(ctx, blobCurve.beziercurve.v3.x, blobCurve.beziercurve.v3.y, state.debugRadius, '#F00');
+  }
+
   window.requestAnimationFrame(draw);
+}
+
+function drawCircle(ctx, x, y, r, fillStyle) {
+  ctx.fillStyle = fillStyle;
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawLine(ctx, x1, y1, x2, y2, strokeStyle) {
+  ctx.strokeStyle = strokeStyle;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
 }
 
 function drawBlobs (ctx, blobs) {
@@ -92,11 +134,67 @@ function drawBlob(ctx, blob) {
   ctx.fill();
 }
 
+function between(x, min, max) {
+  return x >= min && x <= max;
+}
+
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
 function keyTyped() {
   if (key === ' ') {
     state.playing = !state.playing;
+  }
+  else if (key === 'd') {
+    state.debug = !state.debug;
+  }
+  return false;
+}
+function mouseMoved(event) {
+  if (state.debug) {
+    if (
+      between(event.x, blobCurve.beziercurve['v0'].x - state.debugRadius, blobCurve.beziercurve['v0'].x + state.debugRadius) 
+      && between(event.y, blobCurve.beziercurve['v0'].y - state.debugRadius, blobCurve.beziercurve['v0'].y + state.debugRadius)
+    ) {
+      state.mouseOver = 'v0';
+    } else if (
+      between(event.x, blobCurve.beziercurve['v1'].x - state.debugRadius, blobCurve.beziercurve['v1'].x + state.debugRadius) 
+      && between(event.y, blobCurve.beziercurve['v1'].y - state.debugRadius, blobCurve.beziercurve['v1'].y + state.debugRadius)
+    ) {
+      state.mouseOver = 'v1';
+    } else if (
+      between(event.x, blobCurve.beziercurve['v2'].x - state.debugRadius, blobCurve.beziercurve['v2'].x + state.debugRadius) 
+      && between(event.y, blobCurve.beziercurve['v2'].y - state.debugRadius, blobCurve.beziercurve['v2'].y + state.debugRadius)
+    ) {
+      state.mouseOver = 'v2';
+    } else if (
+      between(event.x, blobCurve.beziercurve['v3'].x - state.debugRadius, blobCurve.beziercurve['v3'].x + state.debugRadius) 
+      && between(event.y, blobCurve.beziercurve['v3'].y - state.debugRadius, blobCurve.beziercurve['v3'].y + state.debugRadius)
+    ) {
+      state.mouseOver = 'v3';
+    } else {
+      state.mouseOver = null;
+    }
+  }
+}
+function mousePressed(event) {
+  if (state.mouseOver !== null) {
+    state.mouseLocked = state.mouseOver;
+    state.mouseOffsetX = event.x - blobCurve.beziercurve[state.mouseOver].x;
+    state.mouseOffsetY = event.y - blobCurve.beziercurve[state.mouseOver].y;
+  } else {
+    state.mouseLocked = null;
+  }
+}
+function mouseReleased() {
+  state.mouseLocked = null;
+}
+function mouseDragged(event) {
+  if (state.mouseLocked !== null) {
+    let newPosX = event.x - state.mouseOffsetX;
+    let newPosY = event.y - state.mouseOffsetY;
+    
+    blobCurve.beziercurve[state.mouseLocked] = createVector(newPosX, newPosY);
+    blobCurve.beziercurve.calculatePoints();
   }
 }

@@ -27,13 +27,6 @@ function set_state(prop, value) {
     propVal = parseFloat(value);
     state[prop] = propVal;
 
-    if (prop === "v0_x") { blobCurve.setV0( createVector(propVal,                    blobCurve.beziercurve.v0.y )); }
-    if (prop === "v0_y") { blobCurve.setV0( createVector(blobCurve.beziercurve.v0.x, propVal                    )); }
-    if (prop === "v3_x") { blobCurve.setV3( createVector(propVal,                    blobCurve.beziercurve.v3.y )); }
-    if (prop === "v3_y") { blobCurve.setV3( createVector(blobCurve.beziercurve.v3.x, propVal                    )); }
-
-    // console.log(state);
-
     // set URLParameter
     set_url_parameter(prop, value, urlParams);
 

@@ -1,20 +1,9 @@
 function BlobCurve(a, b, c, d, blob_length, blob_size) {
 
-  this.beziercurve = new BezierCurve(a, b, c, d, blob_length, blob_size);
+  this.beziercurve = new BezierCurve(a, b, c, d);
 
   this.blob_length = blob_length;
   this.blob_size = blob_size;
-
-  this.setV0 = function (v0) { 
-    this.beziercurve.v0 = v0;
-    this.beziercurve.v1 = createVector(v0.x + 200, v0.y);
-    this.beziercurve.calculatePoints();
-  }
-  this.setV3 = function (v3) { 
-    this.beziercurve.v3 = v3;
-    this.beziercurve.v2 = createVector(v3.x - 200, v3.y);
-    this.beziercurve.calculatePoints();
-  }
 
   this.blobStyle = function (intensity) {
     noStroke();
