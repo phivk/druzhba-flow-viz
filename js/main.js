@@ -13,7 +13,7 @@ function init () {
 
   state = {
     t: 0.0,
-    tStep: 1 / 100,
+    tStep: 0.01,
     playing: true,
     blob_size: 32,
     blob_length: 20,
@@ -22,7 +22,7 @@ function init () {
     v0_y: 0.8 * windowHeight,
     v3_x: 0.8 * windowWidth,
     v3_y: 0.2 * windowHeight,
-    debug: false,
+    debug: true,
     debugRadius: 10,
     mouseOver: null,
     mouseLocked: null,
@@ -41,10 +41,11 @@ function init () {
   // merge into state
   state = Object.assign(state, urlState);
 
-  // init GUI:       prop,        min,   max,            step, value
-  set_slider_params('blob_size',   1,     256,            1,    state.blob_size);
-  set_slider_params('blob_length', 1,     100,            1,    state.blob_length);
-  set_slider_params('blob_amount', 1,     10,             1,    state.blob_amount);
+  // init GUI:       prop,         min,    max,   step,  value
+  set_slider_params('blob_size',   1,      256,   1,     state.blob_size);
+  set_slider_params('blob_length', 1,      100,   1,     state.blob_length);
+  set_slider_params('blob_amount', 1,      10,    1,     state.blob_amount);
+  set_slider_params('tStep',       0.005,  0.05,  0.001, state.tStep);
 
   let a = createVector(state.v0_x,       state.v0_y);
   let b = createVector(state.v0_x + 200, state.v0_y);
@@ -90,10 +91,10 @@ function draw() {
       '#FFF'
     );
     
-    drawCircle(ctx, blobCurve.beziercurve.v0.x, blobCurve.beziercurve.v0.y, state.debugRadius, '#F00');
-    drawCircle(ctx, blobCurve.beziercurve.v1.x, blobCurve.beziercurve.v1.y, state.debugRadius, '#00F');
-    drawCircle(ctx, blobCurve.beziercurve.v2.x, blobCurve.beziercurve.v2.y, state.debugRadius, '#00F');
-    drawCircle(ctx, blobCurve.beziercurve.v3.x, blobCurve.beziercurve.v3.y, state.debugRadius, '#F00');
+    drawCircle(ctx, blobCurve.beziercurve.v0.x, blobCurve.beziercurve.v0.y, state.debugRadius, '#FF4136');
+    drawCircle(ctx, blobCurve.beziercurve.v1.x, blobCurve.beziercurve.v1.y, state.debugRadius, '#357EDD');
+    drawCircle(ctx, blobCurve.beziercurve.v2.x, blobCurve.beziercurve.v2.y, state.debugRadius, '#357EDD');
+    drawCircle(ctx, blobCurve.beziercurve.v3.x, blobCurve.beziercurve.v3.y, state.debugRadius, '#FF4136');
   }
 
   window.requestAnimationFrame(draw);
