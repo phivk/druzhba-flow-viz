@@ -1,6 +1,4 @@
 //global
-let t = 0.0;
-let tStep = 1 / 100;
 let state;
 let blobCurve;
 
@@ -14,6 +12,8 @@ function init () {
   ctx = canvas.getContext('2d');
 
   state = {
+    t: 0.0,
+    tStep: 1 / 100,
     playing: true,
     blob_size: 32,
     blob_length: 20,
@@ -57,9 +57,8 @@ function init () {
 
 function draw() {
   if (state.playing) {
-    t += tStep;
-    if (t > 1.0) t = 0.0;
-    // Include drawing statements in this conditional for smoother trailing effect
+    state.t += state.tStep;
+    if (state.t > 1.0) state.t = 0.0;
   }
   
   // clear canvas
@@ -68,7 +67,7 @@ function draw() {
 
   // draw blobs
   for (var i = 0; i < state.blob_amount; i++) {
-    let blobs = blobCurve.getCurrentBlobs(t - i/state.blob_amount);
+    let blobs = blobCurve.getCurrentBlobs(state.t - i/state.blob_amount);
     drawBlobs(ctx, blobs);
   }
 
