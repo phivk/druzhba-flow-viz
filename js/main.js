@@ -147,6 +147,10 @@ function keyTyped() {
   }
   else if (key === 'd') {
     state.debug = !state.debug;
+    if (!state.debug) {
+      state.mouseOver = null;
+      state.mouseLocked = null;
+    }
   }
   return false;
 }
