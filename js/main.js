@@ -122,21 +122,14 @@ function drawLine(ctx, x1, y1, x2, y2, strokeStyle) {
 
 function drawBlobs (ctx, blobs) {
   for (var i = 0; i < blobs.length; i++) {
-    drawBlob(ctx, blobs[i]);
+    drawCircle(
+      ctx, 
+      blobs[i].x, 
+      blobs[i].y, 
+      blobs[i].intensity * state.blob_size,
+      'rgba(0, 0, 0, '+blobs[i].intensity+')'
+    );
   }
-}
-
-function drawBlob(ctx, blob) {
-  ctx.fillStyle = 'rgba(0, 0, 0, '+blob.intensity+')';
-  ctx.beginPath();
-  ctx.arc(
-    blob.x,
-    blob.y,
-    blob.intensity * state.blob_size,
-    0,
-    Math.PI * 2
-  );
-  ctx.fill();
 }
 
 function between(x, min, max) {
