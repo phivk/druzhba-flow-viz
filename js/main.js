@@ -5,6 +5,11 @@ let blobCurve;
 let windowWidth, windowHeight;
 let canvas, ctx;
 
+let BLUE      = '#357EDD';
+let DARK_BLUE = '#00449E';
+let RED       = '#FF4136';
+let DARK_RED  = '#E7040F';
+
 function init () {
   canvas = document.getElementById('the-canvas');
   canvas.width = windowWidth = window.innerWidth;
@@ -91,10 +96,10 @@ function draw() {
       '#FFF'
     );
     
-    drawCircle(ctx, blobCurve.beziercurve.v0.x, blobCurve.beziercurve.v0.y, state.debugRadius, '#FF4136');
-    drawCircle(ctx, blobCurve.beziercurve.v1.x, blobCurve.beziercurve.v1.y, state.debugRadius, '#357EDD');
-    drawCircle(ctx, blobCurve.beziercurve.v2.x, blobCurve.beziercurve.v2.y, state.debugRadius, '#357EDD');
-    drawCircle(ctx, blobCurve.beziercurve.v3.x, blobCurve.beziercurve.v3.y, state.debugRadius, '#FF4136');
+    drawCircle(ctx, blobCurve.beziercurve.v0.x, blobCurve.beziercurve.v0.y, state.debugRadius, state.mouseOver === 'v0' ?  DARK_RED  : RED);
+    drawCircle(ctx, blobCurve.beziercurve.v1.x, blobCurve.beziercurve.v1.y, state.debugRadius, state.mouseOver === 'v1' ?  DARK_BLUE : BLUE);
+    drawCircle(ctx, blobCurve.beziercurve.v2.x, blobCurve.beziercurve.v2.y, state.debugRadius, state.mouseOver === 'v2' ?  DARK_BLUE : BLUE);
+    drawCircle(ctx, blobCurve.beziercurve.v3.x, blobCurve.beziercurve.v3.y, state.debugRadius, state.mouseOver === 'v3' ?  DARK_RED  : RED);
   }
 
   window.requestAnimationFrame(draw);
