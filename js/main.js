@@ -33,6 +33,7 @@ function init () {
     mouseLocked: null,
     mouseOffsetX: 0,
     mouseOffsetY: 0,
+    blobFill: true,
   };
 
   // get URL Parameters and merge with state
@@ -96,20 +97,22 @@ function draw() {
       '#FFF'
     );
     
-    drawCircle(ctx, blobCurve.beziercurve.v0.x, blobCurve.beziercurve.v0.y, state.debugRadius, state.mouseOver === 'v0' ?  DARK_RED  : RED);
-    drawCircle(ctx, blobCurve.beziercurve.v1.x, blobCurve.beziercurve.v1.y, state.debugRadius, state.mouseOver === 'v1' ?  DARK_BLUE : BLUE);
-    drawCircle(ctx, blobCurve.beziercurve.v2.x, blobCurve.beziercurve.v2.y, state.debugRadius, state.mouseOver === 'v2' ?  DARK_BLUE : BLUE);
-    drawCircle(ctx, blobCurve.beziercurve.v3.x, blobCurve.beziercurve.v3.y, state.debugRadius, state.mouseOver === 'v3' ?  DARK_RED  : RED);
+    drawCircle(ctx, blobCurve.beziercurve.v0.x, blobCurve.beziercurve.v0.y, state.debugRadius, state.mouseOver === 'v0' ?  DARK_RED  : RED,  state.mouseOver === 'v0' ? 'white' : 'transparent');
+    drawCircle(ctx, blobCurve.beziercurve.v1.x, blobCurve.beziercurve.v1.y, state.debugRadius, state.mouseOver === 'v1' ?  DARK_BLUE : BLUE, state.mouseOver === 'v1' ? 'white' : 'transparent');
+    drawCircle(ctx, blobCurve.beziercurve.v2.x, blobCurve.beziercurve.v2.y, state.debugRadius, state.mouseOver === 'v2' ?  DARK_BLUE : BLUE, state.mouseOver === 'v2' ? 'white' : 'transparent');
+    drawCircle(ctx, blobCurve.beziercurve.v3.x, blobCurve.beziercurve.v3.y, state.debugRadius, state.mouseOver === 'v3' ?  DARK_RED  : RED,  state.mouseOver === 'v3' ? 'white' : 'transparent');
   }
 
   window.requestAnimationFrame(draw);
 }
 
-function drawCircle(ctx, x, y, r, fillStyle) {
+function drawCircle(ctx, x, y, r, fillStyle, strokeStyle) {
   ctx.fillStyle = fillStyle;
+  ctx.strokeStyle = strokeStyle;
   ctx.beginPath();
   ctx.arc(x, y, r, 0, Math.PI * 2);
   ctx.fill();
+  ctx.stroke();
 }
 
 function drawLine(ctx, x1, y1, x2, y2, strokeStyle) {
@@ -127,7 +130,8 @@ function drawBlobs (ctx, blobs) {
       blobs[i].x, 
       blobs[i].y, 
       blobs[i].intensity * state.blob_size,
-      'rgba(0, 0, 0, '+blobs[i].intensity+')'
+      state.blobFill   ? 'rgba(0, 0, 0, '+blobs[i].intensity+')' : 'transparent',
+      'rgba(0, 0, 0, '+blobs[i].intensity+')',
     );
   }
 }
@@ -143,12 +147,15 @@ function keyTyped() {
   if (key === ' ') {
     state.playing = !state.playing;
   }
-  else if (key === 'd') {
+  else if (key === 'c') {
     state.debug = !state.debug;
     if (!state.debug) {
       state.mouseOver = null;
       state.mouseLocked = null;
     }
+  }
+  else if (key === 'f') {
+    state.blobFill = !state.blobFill;
   }
   return false;
 }
