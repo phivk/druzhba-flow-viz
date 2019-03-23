@@ -27,14 +27,19 @@
   <body class="sans-serif" onload="init();">
     <canvas id="the-canvas"></canvas>
     <div class="absolute top-2 left-2">
-      <div><span class="dib w3">Blob Size</span>   <input type="range" class="dib slider blob_size"   oninput="set_state('blob_size',   this.value)" onchange="set_state('blob_size',   this.value)"></div>
-      <div><span class="dib w3">Blob Length</span> <input type="range" class="dib slider blob_length" oninput="set_state('blob_length', this.value)" onchange="set_state('blob_length', this.value)"></div>
-      <div><span class="dib w3">Blob Amount</span> <input type="range" class="dib slider blob_amount" oninput="set_state('blob_amount', this.value)" onchange="set_state('blob_amount', this.value)"></div>
-      <div><span class="dib w3">Blob Speed</span>  <input type="range" class="dib slider tStep"       oninput="set_state('tStep',       this.value)" onchange="set_state('tStep',       this.value)"></div>
-      <br>
-      <div>Press '<strong class="red">SPACE</strong>' to toggle Animation</div>
-      <div>Press '<strong class="red">c</strong>' to toggle Control Points</div>
-      <div>Press '<strong class="red">f</strong>' to toggle Blob Fill</div>
+      <div>
+        <div>Press '<strong class="red">SPACE</strong>' to toggle Animation</div>
+        <div>Press '<strong class="red">c</strong>' to toggle Control Points</div>
+      </div>
+      <div>
+        <h3>Blob Curve 1</h3>
+        <div><span class="dib w3">Blob Size</span>   <input type="range" class="dib slider blob_size"   oninput="set_state('blob_size',   this.value)" onchange="set_state('blob_size',   this.value)"></div>
+        <div><span class="dib w3">Blob Length</span> <input type="range" class="dib slider blob_length" oninput="set_state('blob_length', this.value)" onchange="set_state('blob_length', this.value)"></div>
+        <div><span class="dib w3">Blob Amount</span> <input type="range" class="dib slider blob_amount" oninput="set_state('blob_amount', this.value)" onchange="set_state('blob_amount', this.value)"></div>
+        <div><span class="dib w3">Blob Speed</span>  <input type="range" class="dib slider tStep"       oninput="set_state('tStep',       this.value)" onchange="set_state('tStep',       this.value)"></div>
+        <div>Press '<strong class="red">f</strong>' to toggle Blob Fill</div>
+        <br>
+    </div>
     </div>
   </body>
 </html>

@@ -1,6 +1,6 @@
 //global
 let state;
-let blobCurve;
+let blobCurve1;
 
 let windowWidth, windowHeight;
 let canvas, ctx;
@@ -19,7 +19,7 @@ function init () {
   state = {
     t: 0.0,
     tStep: 0.01,
-    playing: true,
+    playing: false,
     blob_size: 32,
     blob_length: 20,
     blob_amount: 3,
@@ -57,7 +57,7 @@ function init () {
   let b = createVector(state.v0_x + 200, state.v0_y);
   let c = createVector(state.v3_x - 200, state.v3_y);
   let d = createVector(state.v3_x,       state.v3_y);
-  blobCurve = new BlobCurve(a, b, c, d, state.blob_length, state.blob_size);
+  blobCurve1 = new BlobCurve(a, b, c, d, state.blob_length, state.blob_size);
 
   window.requestAnimationFrame(draw);
 }
@@ -73,34 +73,11 @@ function draw() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // draw blobs
-  for (var i = 0; i < state.blob_amount; i++) {
-    let blobs = blobCurve.getCurrentBlobs(state.t - i/state.blob_amount);
-    drawBlobs(ctx, blobs);
-  }
+  drawBlobTrail(blobCurve1);
 
   // draw debug
   if (state.debug) {
-    drawLine(
-      ctx,
-      blobCurve.beziercurve.v0.x, 
-      blobCurve.beziercurve.v0.y,
-      blobCurve.beziercurve.v1.x, 
-      blobCurve.beziercurve.v1.y,
-      '#FFF'
-    );
-    drawLine(
-      ctx,
-      blobCurve.beziercurve.v2.x, 
-      blobCurve.beziercurve.v2.y,
-      blobCurve.beziercurve.v3.x, 
-      blobCurve.beziercurve.v3.y,
-      '#FFF'
-    );
-    
-    drawCircle(ctx, blobCurve.beziercurve.v0.x, blobCurve.beziercurve.v0.y, state.debugRadius, state.mouseOver === 'v0' ?  DARK_RED  : RED,  state.mouseOver === 'v0' ? 'white' : 'transparent');
-    drawCircle(ctx, blobCurve.beziercurve.v1.x, blobCurve.beziercurve.v1.y, state.debugRadius, state.mouseOver === 'v1' ?  DARK_BLUE : BLUE, state.mouseOver === 'v1' ? 'white' : 'transparent');
-    drawCircle(ctx, blobCurve.beziercurve.v2.x, blobCurve.beziercurve.v2.y, state.debugRadius, state.mouseOver === 'v2' ?  DARK_BLUE : BLUE, state.mouseOver === 'v2' ? 'white' : 'transparent');
-    drawCircle(ctx, blobCurve.beziercurve.v3.x, blobCurve.beziercurve.v3.y, state.debugRadius, state.mouseOver === 'v3' ?  DARK_RED  : RED,  state.mouseOver === 'v3' ? 'white' : 'transparent');
+    blobCurve1.drawControlPoints({ctx, state, drawStyles: {}});
   }
 
   window.requestAnimationFrame(draw);
@@ -115,14 +92,6 @@ function drawCircle(ctx, x, y, r, fillStyle, strokeStyle) {
   ctx.stroke();
 }
 
-function drawLine(ctx, x1, y1, x2, y2, strokeStyle) {
-  ctx.strokeStyle = strokeStyle;
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2, y2);
-  ctx.stroke();
-}
-
 function drawBlobs (ctx, blobs) {
   for (var i = 0; i < blobs.length; i++) {
     drawCircle(
@@ -133,6 +102,13 @@ function drawBlobs (ctx, blobs) {
       state.blobFill   ? 'rgba(0, 0, 0, '+blobs[i].intensity+')' : 'transparent',
       'rgba(0, 0, 0, '+blobs[i].intensity+')',
     );
+  }
+}
+
+function drawBlobTrail(blobCurve) {
+  for (var i = 0; i < state.blob_amount; i++) {
+    let blobs = blobCurve.getCurrentBlobs(state.t - i/state.blob_amount);
+    drawBlobs(ctx, blobs);
   }
 }
 
@@ -150,8 +126,8 @@ function keyTyped() {
   else if (key === 'c') {
     state.debug = !state.debug;
     if (!state.debug) {
-      state.mouseOver = null;
-      state.mouseLocked = null;
+      state.mouseOver1 = null;
+      state.mouseLocked1 = null;
     }
   }
   else if (key === 'f') {
@@ -161,49 +137,15 @@ function keyTyped() {
 }
 function mouseMoved(event) {
   if (state.debug) {
-    if (
-      between(event.x, blobCurve.beziercurve['v0'].x - state.debugRadius, blobCurve.beziercurve['v0'].x + state.debugRadius) 
-      && between(event.y, blobCurve.beziercurve['v0'].y - state.debugRadius, blobCurve.beziercurve['v0'].y + state.debugRadius)
-    ) {
-      state.mouseOver = 'v0';
-    } else if (
-      between(event.x, blobCurve.beziercurve['v1'].x - state.debugRadius, blobCurve.beziercurve['v1'].x + state.debugRadius) 
-      && between(event.y, blobCurve.beziercurve['v1'].y - state.debugRadius, blobCurve.beziercurve['v1'].y + state.debugRadius)
-    ) {
-      state.mouseOver = 'v1';
-    } else if (
-      between(event.x, blobCurve.beziercurve['v2'].x - state.debugRadius, blobCurve.beziercurve['v2'].x + state.debugRadius) 
-      && between(event.y, blobCurve.beziercurve['v2'].y - state.debugRadius, blobCurve.beziercurve['v2'].y + state.debugRadius)
-    ) {
-      state.mouseOver = 'v2';
-    } else if (
-      between(event.x, blobCurve.beziercurve['v3'].x - state.debugRadius, blobCurve.beziercurve['v3'].x + state.debugRadius) 
-      && between(event.y, blobCurve.beziercurve['v3'].y - state.debugRadius, blobCurve.beziercurve['v3'].y + state.debugRadius)
-    ) {
-      state.mouseOver = 'v3';
-    } else {
-      state.mouseOver = null;
-    }
+    blobCurve1.mouseMoved(event);
   }
 }
 function mousePressed(event) {
-  if (state.mouseOver !== null) {
-    state.mouseLocked = state.mouseOver;
-    state.mouseOffsetX = event.x - blobCurve.beziercurve[state.mouseOver].x;
-    state.mouseOffsetY = event.y - blobCurve.beziercurve[state.mouseOver].y;
-  } else {
-    state.mouseLocked = null;
-  }
+  blobCurve1.mousePressed(event);
 }
 function mouseReleased() {
-  state.mouseLocked = null;
+  blobCurve1.mouseReleased();
 }
 function mouseDragged(event) {
-  if (state.mouseLocked !== null) {
-    let newPosX = event.x - state.mouseOffsetX;
-    let newPosY = event.y - state.mouseOffsetY;
-    
-    blobCurve.beziercurve[state.mouseLocked] = createVector(newPosX, newPosY);
-    blobCurve.beziercurve.calculatePoints();
-  }
+  blobCurve1.mouseDragged(event);
 }
