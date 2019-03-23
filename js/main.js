@@ -5,10 +5,10 @@ let blobCurve;
 let windowWidth, windowHeight;
 let canvas, ctx;
 
-let BLUE      = '#357EDD';
-let DARK_BLUE = '#00449E';
 let RED       = '#FF4136';
 let DARK_RED  = '#E7040F';
+let BLUE      = '#357EDD';
+let DARK_BLUE = '#00449E';
 
 function init () {
   canvas = document.getElementById('the-canvas');
@@ -51,13 +51,13 @@ function init () {
   set_slider_params('blob_size',   1,      256,   1,     state.blob_size);
   set_slider_params('blob_length', 1,      100,   1,     state.blob_length);
   set_slider_params('blob_amount', 1,      10,    1,     state.blob_amount);
-  set_slider_params('tStep',       0.005,  0.05,  0.001, state.tStep);
+  set_slider_params('tStep',       0.001,  0.02,  0.001, state.tStep);
 
   let a = createVector(state.v0_x,       state.v0_y);
   let b = createVector(state.v0_x + 200, state.v0_y);
   let c = createVector(state.v3_x - 200, state.v3_y);
   let d = createVector(state.v3_x,       state.v3_y);
-  blobCurve = new BlobCurve(a, b, c, d, 50, state.blob_size);
+  blobCurve = new BlobCurve(a, b, c, d, state.blob_length, state.blob_size);
 
   window.requestAnimationFrame(draw);
 }
