@@ -73,7 +73,7 @@ function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
         CPOuterfillStyleHover  = '#E7040F', // DARK_RED
         CPCenterfillStyle      = '#357EDD', // BLUE
         CPCenterfillStyleHover = '#00449E', // DARK_BLUE
-        debugRadius            = 10,
+        cpRadius            = 20,
       },
     }
   ){
@@ -95,22 +95,22 @@ function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
     );
     
     drawCircle(
-      ctx, this.beziercurve.v0.x, this.beziercurve.v0.y, debugRadius, 
+      ctx, this.beziercurve.v0.x, this.beziercurve.v0.y, cpRadius, 
       this.mouseOver === 'v0' ? CPOuterfillStyleHover : CPOuterfillStyle,  
       this.mouseOver === 'v0' ? CPstrokeStyleHover : CPstrokeStyle,
     );
     drawCircle(
-      ctx, this.beziercurve.v1.x, this.beziercurve.v1.y, debugRadius, 
+      ctx, this.beziercurve.v1.x, this.beziercurve.v1.y, cpRadius, 
       this.mouseOver === 'v1' ? CPCenterfillStyleHover: CPCenterfillStyle, 
       this.mouseOver === 'v1' ? CPstrokeStyleHover : CPstrokeStyle,
     );
     drawCircle(
-      ctx, this.beziercurve.v2.x, this.beziercurve.v2.y, debugRadius, 
+      ctx, this.beziercurve.v2.x, this.beziercurve.v2.y, cpRadius, 
       this.mouseOver === 'v2' ? CPCenterfillStyleHover: CPCenterfillStyle, 
       this.mouseOver === 'v2' ? CPstrokeStyleHover : CPstrokeStyle,
     );
     drawCircle(
-      ctx, this.beziercurve.v3.x, this.beziercurve.v3.y, debugRadius, 
+      ctx, this.beziercurve.v3.x, this.beziercurve.v3.y, cpRadius, 
       this.mouseOver === 'v3' ? CPOuterfillStyleHover : CPOuterfillStyle,  
       this.mouseOver === 'v3' ? CPstrokeStyleHover : CPstrokeStyle,
     );
@@ -118,23 +118,23 @@ function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
 
   this.calcMouseOver = function (eventX, eventY) {
     if (
-      between(eventX, this.beziercurve['v0'].x - state.debugRadius, this.beziercurve['v0'].x + state.debugRadius) 
-      && between(eventY, this.beziercurve['v0'].y - state.debugRadius, this.beziercurve['v0'].y + state.debugRadius)
+      between(eventX, this.beziercurve['v0'].x - state.cpRadius, this.beziercurve['v0'].x + state.cpRadius) 
+      && between(eventY, this.beziercurve['v0'].y - state.cpRadius, this.beziercurve['v0'].y + state.cpRadius)
     ) {
       return 'v0';
     } else if (
-      between(eventX, this.beziercurve['v1'].x - state.debugRadius, this.beziercurve['v1'].x + state.debugRadius) 
-      && between(eventY, this.beziercurve['v1'].y - state.debugRadius, this.beziercurve['v1'].y + state.debugRadius)
+      between(eventX, this.beziercurve['v1'].x - state.cpRadius, this.beziercurve['v1'].x + state.cpRadius) 
+      && between(eventY, this.beziercurve['v1'].y - state.cpRadius, this.beziercurve['v1'].y + state.cpRadius)
     ) {
       return 'v1';
     } else if (
-      between(eventX, this.beziercurve['v2'].x - state.debugRadius, this.beziercurve['v2'].x + state.debugRadius) 
-      && between(eventY, this.beziercurve['v2'].y - state.debugRadius, this.beziercurve['v2'].y + state.debugRadius)
+      between(eventX, this.beziercurve['v2'].x - state.cpRadius, this.beziercurve['v2'].x + state.cpRadius) 
+      && between(eventY, this.beziercurve['v2'].y - state.cpRadius, this.beziercurve['v2'].y + state.cpRadius)
     ) {
       return 'v2';
     } else if (
-      between(eventX, this.beziercurve['v3'].x - state.debugRadius, this.beziercurve['v3'].x + state.debugRadius) 
-      && between(eventY, this.beziercurve['v3'].y - state.debugRadius, this.beziercurve['v3'].y + state.debugRadius)
+      between(eventX, this.beziercurve['v3'].x - state.cpRadius, this.beziercurve['v3'].x + state.cpRadius) 
+      && between(eventY, this.beziercurve['v3'].y - state.cpRadius, this.beziercurve['v3'].y + state.cpRadius)
     ) {
       return 'v3';
     } else {

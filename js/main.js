@@ -5,10 +5,12 @@ let blobCurves = [];
 let windowWidth, windowHeight;
 let canvas, ctx;
 
-let RED       = '#FF4136';
-let DARK_RED  = '#E7040F';
-let BLUE      = '#357EDD';
-let DARK_BLUE = '#00449E';
+let RED        = '#FF4136';
+let DARK_RED   = '#E7040F';
+let GREEN      = '#19A974';
+let DARK_GREEN = '#137752';
+let BLUE       = '#357EDD';
+let DARK_BLUE  = '#00449E';
 
 function init () {
   canvas = document.getElementById('the-canvas');
@@ -37,7 +39,7 @@ function init () {
     v3_x: 0.8 * windowWidth,
     v3_y: 0.3 * windowHeight,
     debug: true,
-    debugRadius: 10,
+    cpRadius: 20,
     mouseOver: null,
     mouseLocked: null,
     mouseOffsetX: 0,
@@ -99,8 +101,18 @@ function draw() {
 
   // draw debug
   if (state.debug) {
-    blobCurves[0].drawControlPoints({ctx, state, drawStyles: {}});
-    blobCurves[1].drawControlPoints({ctx, state, drawStyles: {}});
+    blobCurves[0].drawControlPoints({ctx, state, drawStyles: {
+      CPOuterfillStyle:       GREEN,
+      CPOuterfillStyleHover:  DARK_GREEN,
+      CPCenterfillStyle:      GREEN,
+      CPCenterfillStyleHover: DARK_GREEN,
+    }});
+    blobCurves[1].drawControlPoints({ctx, state, drawStyles: {
+      CPOuterfillStyle:       BLUE,
+      CPOuterfillStyleHover:  DARK_BLUE,
+      CPCenterfillStyle:      BLUE,
+      CPCenterfillStyleHover: DARK_BLUE,
+    }});
   }
 
   window.requestAnimationFrame(draw);

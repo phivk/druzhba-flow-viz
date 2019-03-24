@@ -19,8 +19,9 @@
       .left-2 {left: 0.5rem}
       .v-top {vertical-align: top;}
       .w3 {width: 6rem;}
-      .blue {color: #357EDD;}
       .red {color: #FF4136;}
+      .green {color: #19A974;}
+      .blue {color: #357EDD;}
       #defaultCanvas0 {display: none;}
     </style>
     <script src="js/vendor/p5.min.js"></script>
@@ -40,13 +41,13 @@
         <div><span class="dib w3">Blob Speed</span>  <input type="range" class="dib slider tStep"       oninput="set_state('tStep',       this.value)" onchange="set_state('tStep',       this.value)"></div>
       </div>
       <div class="dib v-top">
-        <h3>Blob Curve 1</h3>
+        <h3 class="green">Blob Curve 1</h3>
         <div><span class="dib w3">Blob Amount</span> <input type="range" class="dib slider 0.amount"    oninput="set_state('0.amount',    this.value)" onchange="set_state('0.amount',    this.value)"></div>
         <div><span class="dib w3">Blob Size</span>   <input type="range" class="dib slider 0.size"      oninput="set_state('0.size',      this.value)" onchange="set_state('0.size',      this.value)"></div>
         <div><span class="dib w3">Blob Length</span> <input type="range" class="dib slider 0.length"    oninput="set_state('0.length',    this.value)" onchange="set_state('0.length',    this.value)"></div>
       </div>
       <div class="dib v-top">
-        <h3>Blob Curve 2</h3>
+        <h3 class="blue">Blob Curve 2</h3>
         <div><span class="dib w3">Blob Amount</span> <input type="range" class="dib slider 1.amount"    oninput="set_state('1.amount',    this.value)" onchange="set_state('1.amount',    this.value)"></div>
         <div><span class="dib w3">Blob Size</span>   <input type="range" class="dib slider 1.size"      oninput="set_state('1.size',      this.value)" onchange="set_state('1.size',      this.value)"></div>
         <div><span class="dib w3">Blob Length</span> <input type="range" class="dib slider 1.length"    oninput="set_state('1.length',    this.value)" onchange="set_state('1.length',    this.value)"></div>
