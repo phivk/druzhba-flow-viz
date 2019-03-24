@@ -142,6 +142,7 @@ function between(x, min, max) {
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
+
 function keyTyped() {
   if (key === ' ') {
     state.playing = !state.playing;
@@ -158,21 +159,30 @@ function keyTyped() {
   }
   return false;
 }
+
 function mouseMoved(event) {
   if (state.debug) {
     blobCurves[0].mouseMoved(event);
     blobCurves[1].mouseMoved(event);
   }
 }
+
 function mousePressed(event) {
   blobCurves[0].mousePressed(event);
   blobCurves[1].mousePressed(event);
 }
+
 function mouseReleased() {
   blobCurves[0].mouseReleased();
   blobCurves[1].mouseReleased();
 }
+
 function mouseDragged(event) {
   blobCurves[0].mouseDragged(event);
   blobCurves[1].mouseDragged(event);
+}
+
+function touchStarted(event) {
+  blobCurves[0].touchStarted(event);
+  blobCurves[1].touchStarted(event);
 }

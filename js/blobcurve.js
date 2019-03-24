@@ -116,30 +116,34 @@ function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
     );
   }
 
-  this.mouseMoved = function (event) {
+  this.calcMouseOver = function (event) {
     if (
       between(event.x, this.beziercurve['v0'].x - state.debugRadius, this.beziercurve['v0'].x + state.debugRadius) 
       && between(event.y, this.beziercurve['v0'].y - state.debugRadius, this.beziercurve['v0'].y + state.debugRadius)
     ) {
-      this.mouseOver = 'v0';
+      return 'v0';
     } else if (
       between(event.x, this.beziercurve['v1'].x - state.debugRadius, this.beziercurve['v1'].x + state.debugRadius) 
       && between(event.y, this.beziercurve['v1'].y - state.debugRadius, this.beziercurve['v1'].y + state.debugRadius)
     ) {
-      this.mouseOver = 'v1';
+      return 'v1';
     } else if (
       between(event.x, this.beziercurve['v2'].x - state.debugRadius, this.beziercurve['v2'].x + state.debugRadius) 
       && between(event.y, this.beziercurve['v2'].y - state.debugRadius, this.beziercurve['v2'].y + state.debugRadius)
     ) {
-      this.mouseOver = 'v2';
+      return 'v2';
     } else if (
       between(event.x, this.beziercurve['v3'].x - state.debugRadius, this.beziercurve['v3'].x + state.debugRadius) 
       && between(event.y, this.beziercurve['v3'].y - state.debugRadius, this.beziercurve['v3'].y + state.debugRadius)
     ) {
-      this.mouseOver = 'v3';
+      return 'v3';
     } else {
-      this.mouseOver = null;
+      return null;
     }
+  }
+
+  this.mouseMoved = function (event) {
+    this.mouseOver = this.calcMouseOver(event);
   }
 
   this.mousePressed = function (event) {
@@ -152,16 +156,21 @@ function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
     }
   }
 
-  this.mouseReleased = function () {
-    this.mouseLocked = null;
-  }
-
   this.mouseDragged = function (event) {
     if (this.mouseLocked !== null) {
       let newPosX = event.x - this.mouseOffsetX;
       let newPosY = event.y - this.mouseOffsetY;
       this.setControlPoint(this.mouseLocked, newPosX, newPosY);
     }
+  }
+
+  this.mouseReleased = function () {
+    this.mouseLocked = null;
+  }
+
+  this.touchStarted = function (event) {
+    this.mouseOver = this.calcMouseOver(event);
+    this.mousePressed(event);
   }
 
   this.setControlPoint = function (controlPointName, newPosX, newPosY) {
