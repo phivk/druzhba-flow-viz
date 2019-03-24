@@ -17,16 +17,23 @@ function init () {
   ctx = canvas.getContext('2d');
 
   state = {
+    curves: [
+      {
+        size: 32,
+      },
+      {
+        size: 16,
+      },
+    ],
     t: 0.0,
     tStep: 0.01,
     playing: true,
-    blob_size: 32,
     blob_length: 20,
     blob_amount: 3,
     v0_x: 0.2 * windowWidth,
     v0_y: 0.8 * windowHeight,
     v3_x: 0.8 * windowWidth,
-    v3_y: 0.2 * windowHeight,
+    v3_y: 0.3 * windowHeight,
     debug: true,
     debugRadius: 10,
     mouseOver: null,
@@ -37,18 +44,18 @@ function init () {
   };
 
   // get URL Parameters and merge with state
-  urlParams = new URLSearchParams(window.location.search);
-  urlState = {
-    blob_size:   parseFloat(urlParams.get('blob_size')),
-    blob_length: parseFloat(urlParams.get('blob_length')),
-  }
-  // remove null values
-  Object.keys(urlState).forEach((key) => (urlState[key] == null || isNaN(urlState[key])) && delete urlState[key]);
-  // merge into state
-  state = Object.assign(state, urlState);
+  // urlParams = new URLSearchParams(window.location.search);
+  // urlState = {
+  //   blob_size:   parseFloat(urlParams.get('blob_size')),
+  //   blob_length: parseFloat(urlParams.get('blob_length')),
+  // }
+  // // remove null values
+  // Object.keys(urlState).forEach((key) => (urlState[key] == null || isNaN(urlState[key])) && delete urlState[key]);
+  // // merge into state
+  // state = Object.assign(state, urlState);
 
   // init GUI:       prop,         min,    max,   step,  value
-  set_slider_params('blob_size',   1,      256,   1,     state.blob_size);
+  set_slider_params('0.size',      1,      256,   1,     state.curves[0].size);
   set_slider_params('blob_length', 1,      100,   1,     state.blob_length);
   set_slider_params('blob_amount', 1,      10,    1,     state.blob_amount);
   set_slider_params('tStep',       0.001,  0.02,  0.001, state.tStep);
@@ -64,8 +71,8 @@ function init () {
   let d2 = createVector(state.v3_x,       state.v0_y);
 
   blobCurves = [
-    new BlobCurve(a1, b1, c1, d1, state.blob_length, state.blob_size),
-    new BlobCurve(a2, b2, c2, d2, state.blob_length, state.blob_size),
+    new BlobCurve(a1, b1, c1, d1, state.blob_length, state.curves[0].size),
+    new BlobCurve(a2, b2, c2, d2, state.blob_length, state.curves[0].size),
   ];
 
   window.requestAnimationFrame(draw);
@@ -82,8 +89,8 @@ function draw() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // draw blobs
-  drawBlobTrail(blobCurves[0]);
-  drawBlobTrail(blobCurves[1]);
+  drawBlobTrail(blobCurves[0], state.curves[0]);
+  drawBlobTrail(blobCurves[1], state.curves[1]);
 
   // draw debug
   if (state.debug) {
@@ -103,23 +110,23 @@ function drawCircle(ctx, x, y, r, fillStyle, strokeStyle) {
   ctx.stroke();
 }
 
-function drawBlobs (ctx, blobs) {
+function drawBlobs (ctx, blobs, blobState) {
   for (var i = 0; i < blobs.length; i++) {
     drawCircle(
       ctx, 
       blobs[i].x, 
       blobs[i].y, 
-      blobs[i].intensity * state.blob_size,
+      blobs[i].intensity * blobState.size,
       state.blobFill   ? 'rgba(0, 0, 0, '+blobs[i].intensity+')' : 'transparent',
       'rgba(0, 0, 0, '+blobs[i].intensity+')',
     );
   }
 }
 
-function drawBlobTrail(blobCurve) {
+function drawBlobTrail(blobCurve, blobState) {
   for (var i = 0; i < state.blob_amount; i++) {
     let blobs = blobCurve.getCurrentBlobs(state.t - i/state.blob_amount);
-    drawBlobs(ctx, blobs);
+    drawBlobs(ctx, blobs, blobState);
   }
 }
 
