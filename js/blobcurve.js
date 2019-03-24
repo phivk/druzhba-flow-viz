@@ -52,9 +52,9 @@ function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
   //   }
   // }
 
-  this.drawCurve = function () {
-    this.beziercurve.draw();
-  }
+  // this.drawCurve = function () {
+  //   this.beziercurve.draw();
+  // }
   
   // this.draw = function (t) {
   //   let blobs = this.getCurrentBlobs(t);
