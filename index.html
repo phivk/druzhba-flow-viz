@@ -10,14 +10,17 @@
       .db {display: block;}
       .dib {display: inline-block;}
       .sans-serif {font-family: sans-serif;}
-      .top-2 {top: 0.5rem}
-      .top-4 {top: 2rem}
-      .top-5 {top: 4rem}
+      .top-2 {top: 0.5rem;}
+      .top-4 {top: 2rem;}
+      .top-5 {top: 4rem;}
+      .top-55 {top: 6rem;}
+      .top-6 {top: 8rem;}
       .bottom-2 {bottom: 0.5rem}
       .left-2 {left: 0.5rem}
+      .v-top {vertical-align: top;}
       .w3 {width: 6rem;}
-      .blue {color: #357EDD}
-      .red {color: #FF4136}
+      .blue {color: #357EDD;}
+      .red {color: #FF4136;}
       #defaultCanvas0 {display: none;}
     </style>
     <script src="js/vendor/p5.min.js"></script>
@@ -29,24 +32,27 @@
   <body class="sans-serif" onload="init();">
     <canvas id="the-canvas"></canvas>
     <div class="absolute top-2 left-2">
-      <div>Press '<strong class="red">SPACE</strong>' to toggle Animation</div>
-      <div>Press '<strong class="red">c</strong>' to toggle Control Points</div>
-      <div>Press '<strong class="red">f</strong>' to toggle Blob Fill</div>
-    </div>
-    <div class="absolute top-5 left-2">
-      <div class="dib">
+      <div class="dib v-top">
+        <h3>Global</h3>
+        <div>Press '<strong class="red">SPACE</strong>' to toggle Animation</div>
+        <div>Press '<strong class="red">c</strong>' to toggle Control Points</div>
+        <div>Press '<strong class="red">f</strong>' to toggle Blob Fill</div>
+        <div><span class="dib w3">Blob Speed</span>  <input type="range" class="dib slider tStep"       oninput="set_state('tStep',       this.value)" onchange="set_state('tStep',       this.value)"></div>
+      </div>
+      <div class="dib v-top">
         <h3>Blob Curve 1</h3>
         <div><span class="dib w3">Blob Amount</span> <input type="range" class="dib slider 0.amount"    oninput="set_state('0.amount',    this.value)" onchange="set_state('0.amount',    this.value)"></div>
         <div><span class="dib w3">Blob Size</span>   <input type="range" class="dib slider 0.size"      oninput="set_state('0.size',      this.value)" onchange="set_state('0.size',      this.value)"></div>
         <div><span class="dib w3">Blob Length</span> <input type="range" class="dib slider 0.length"    oninput="set_state('0.length',    this.value)" onchange="set_state('0.length',    this.value)"></div>
-        <div><span class="dib w3">Blob Speed</span>  <input type="range" class="dib slider tStep"       oninput="set_state('tStep',       this.value)" onchange="set_state('tStep',       this.value)"></div>
       </div>
-      <div class="dib">
+      <div class="dib v-top">
         <h3>Blob Curve 2</h3>
         <div><span class="dib w3">Blob Amount</span> <input type="range" class="dib slider 1.amount"    oninput="set_state('1.amount',    this.value)" onchange="set_state('1.amount',    this.value)"></div>
         <div><span class="dib w3">Blob Size</span>   <input type="range" class="dib slider 1.size"      oninput="set_state('1.size',      this.value)" onchange="set_state('1.size',      this.value)"></div>
         <div><span class="dib w3">Blob Length</span> <input type="range" class="dib slider 1.length"    oninput="set_state('1.length',    this.value)" onchange="set_state('1.length',    this.value)"></div>
       </div>
+    </div>
+    <div class="absolute top-55 left-2">
     </div>
   </body>
 </html>
