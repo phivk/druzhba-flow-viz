@@ -19,7 +19,7 @@ function init () {
   state = {
     t: 0.0,
     tStep: 0.01,
-    playing: false,
+    playing: true,
     blob_size: 32,
     blob_length: 20,
     blob_amount: 3,
