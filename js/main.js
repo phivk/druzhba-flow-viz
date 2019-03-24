@@ -1,6 +1,6 @@
 //global
 let state;
-let blobCurve1;
+let blobCurves = [];
 
 let windowWidth, windowHeight;
 let canvas, ctx;
@@ -53,11 +53,20 @@ function init () {
   set_slider_params('blob_amount', 1,      10,    1,     state.blob_amount);
   set_slider_params('tStep',       0.001,  0.02,  0.001, state.tStep);
 
-  let a = createVector(state.v0_x,       state.v0_y);
-  let b = createVector(state.v0_x + 200, state.v0_y);
-  let c = createVector(state.v3_x - 200, state.v3_y);
-  let d = createVector(state.v3_x,       state.v3_y);
-  blobCurve1 = new BlobCurve(a, b, c, d, state.blob_length, state.blob_size);
+  let a1 = createVector(state.v0_x,       state.v0_y);
+  let b1 = createVector(state.v0_x + 200, state.v0_y);
+  let c1 = createVector(state.v3_x - 200, state.v3_y);
+  let d1 = createVector(state.v3_x,       state.v3_y);
+
+  let a2 = createVector(state.v0_x,       state.v3_y);
+  let b2 = createVector(state.v0_x + 200, state.v3_y);
+  let c2 = createVector(state.v3_x - 200, state.v0_y);
+  let d2 = createVector(state.v3_x,       state.v0_y);
+
+  blobCurves = [
+    new BlobCurve(a1, b1, c1, d1, state.blob_length, state.blob_size),
+    new BlobCurve(a2, b2, c2, d2, state.blob_length, state.blob_size),
+  ];
 
   window.requestAnimationFrame(draw);
 }
@@ -73,11 +82,13 @@ function draw() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // draw blobs
-  drawBlobTrail(blobCurve1);
+  drawBlobTrail(blobCurves[0]);
+  drawBlobTrail(blobCurves[1]);
 
   // draw debug
   if (state.debug) {
-    blobCurve1.drawControlPoints({ctx, state, drawStyles: {}});
+    blobCurves[0].drawControlPoints({ctx, state, drawStyles: {}});
+    blobCurves[1].drawControlPoints({ctx, state, drawStyles: {}});
   }
 
   window.requestAnimationFrame(draw);
@@ -137,15 +148,19 @@ function keyTyped() {
 }
 function mouseMoved(event) {
   if (state.debug) {
-    blobCurve1.mouseMoved(event);
+    blobCurves[0].mouseMoved(event);
+    blobCurves[1].mouseMoved(event);
   }
 }
 function mousePressed(event) {
-  blobCurve1.mousePressed(event);
+  blobCurves[0].mousePressed(event);
+  blobCurves[1].mousePressed(event);
 }
 function mouseReleased() {
-  blobCurve1.mouseReleased();
+  blobCurves[0].mouseReleased();
+  blobCurves[1].mouseReleased();
 }
 function mouseDragged(event) {
-  blobCurve1.mouseDragged(event);
+  blobCurves[0].mouseDragged(event);
+  blobCurves[1].mouseDragged(event);
 }
