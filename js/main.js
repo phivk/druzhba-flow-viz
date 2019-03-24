@@ -186,3 +186,14 @@ function touchStarted(event) {
   blobCurves[0].touchStarted(event);
   blobCurves[1].touchStarted(event);
 }
+
+function touchMoved(event) {
+  blobCurves[0].touchMoved(event);
+  blobCurves[1].touchMoved(event);
+}
+
+function touchEnded(event) {
+  blobCurves[0].touchEnded(event);
+  blobCurves[1].touchEnded(event);
+}
+

@@ -116,25 +116,25 @@ function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
     );
   }
 
-  this.calcMouseOver = function (event) {
+  this.calcMouseOver = function (eventX, eventY) {
     if (
-      between(event.x, this.beziercurve['v0'].x - state.debugRadius, this.beziercurve['v0'].x + state.debugRadius) 
-      && between(event.y, this.beziercurve['v0'].y - state.debugRadius, this.beziercurve['v0'].y + state.debugRadius)
+      between(eventX, this.beziercurve['v0'].x - state.debugRadius, this.beziercurve['v0'].x + state.debugRadius) 
+      && between(eventY, this.beziercurve['v0'].y - state.debugRadius, this.beziercurve['v0'].y + state.debugRadius)
     ) {
       return 'v0';
     } else if (
-      between(event.x, this.beziercurve['v1'].x - state.debugRadius, this.beziercurve['v1'].x + state.debugRadius) 
-      && between(event.y, this.beziercurve['v1'].y - state.debugRadius, this.beziercurve['v1'].y + state.debugRadius)
+      between(eventX, this.beziercurve['v1'].x - state.debugRadius, this.beziercurve['v1'].x + state.debugRadius) 
+      && between(eventY, this.beziercurve['v1'].y - state.debugRadius, this.beziercurve['v1'].y + state.debugRadius)
     ) {
       return 'v1';
     } else if (
-      between(event.x, this.beziercurve['v2'].x - state.debugRadius, this.beziercurve['v2'].x + state.debugRadius) 
-      && between(event.y, this.beziercurve['v2'].y - state.debugRadius, this.beziercurve['v2'].y + state.debugRadius)
+      between(eventX, this.beziercurve['v2'].x - state.debugRadius, this.beziercurve['v2'].x + state.debugRadius) 
+      && between(eventY, this.beziercurve['v2'].y - state.debugRadius, this.beziercurve['v2'].y + state.debugRadius)
     ) {
       return 'v2';
     } else if (
-      between(event.x, this.beziercurve['v3'].x - state.debugRadius, this.beziercurve['v3'].x + state.debugRadius) 
-      && between(event.y, this.beziercurve['v3'].y - state.debugRadius, this.beziercurve['v3'].y + state.debugRadius)
+      between(eventX, this.beziercurve['v3'].x - state.debugRadius, this.beziercurve['v3'].x + state.debugRadius) 
+      && between(eventY, this.beziercurve['v3'].y - state.debugRadius, this.beziercurve['v3'].y + state.debugRadius)
     ) {
       return 'v3';
     } else {
@@ -143,7 +143,7 @@ function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
   }
 
   this.mouseMoved = function (event) {
-    this.mouseOver = this.calcMouseOver(event);
+    this.mouseOver = this.calcMouseOver(event.clientX, event.clientY);
   }
 
   this.mousePressed = function (event) {
@@ -169,8 +169,28 @@ function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
   }
 
   this.touchStarted = function (event) {
-    this.mouseOver = this.calcMouseOver(event);
-    this.mousePressed(event);
+    this.mouseOver = this.calcMouseOver(event.touches[0].clientX, event.touches[0].clientY);
+    // ~mousePressed
+    if (this.mouseOver !== null) {
+      this.mouseLocked = this.mouseOver;
+      this.mouseOffsetX = event.touches[0].clientX - this.beziercurve[this.mouseOver].x;
+      this.mouseOffsetY = event.touches[0].clientY - this.beziercurve[this.mouseOver].y;
+    } else {
+      this.mouseLocked = null;
+    }
+  }
+
+  this.touchMoved = function (event) {
+    if (this.mouseLocked !== null) {
+      let newPosX = event.touches[0].clientX - this.mouseOffsetX;
+      let newPosY = event.touches[0].clientY - this.mouseOffsetY;
+      this.setControlPoint(this.mouseLocked, newPosX, newPosY);
+    }
+  }
+
+  this.touchEnded = function (event) {
+    this.mouseLocked = null;
+    this.mouseOver = null;
   }
 
   this.setControlPoint = function (controlPointName, newPosX, newPosY) {
