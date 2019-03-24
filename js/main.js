@@ -159,6 +159,9 @@ function keyTyped() {
   if (key === ' ') {
     state.playing = !state.playing;
   }
+  if (key === 'p') {
+    state.playing = !state.playing;
+  }
   else if (key === 'c') {
     state.debug = !state.debug;
     if (!state.debug) {
