@@ -20,9 +20,11 @@ function init () {
     curves: [
       {
         size: 32,
+        length: 32,
       },
       {
         size: 16,
+        length: 16,
       },
     ],
     t: 0.0,
@@ -56,7 +58,9 @@ function init () {
 
   // init GUI:       prop,         min,    max,   step,  value
   set_slider_params('0.size',      1,      256,   1,     state.curves[0].size);
-  set_slider_params('blob_length', 1,      100,   1,     state.blob_length);
+  set_slider_params('0.length',    1,      100,   1,     state.curves[0].length);
+  set_slider_params('1.size',      1,      256,   1,     state.curves[1].size);
+  set_slider_params('1.length',    1,      100,   1,     state.curves[1].length);
   set_slider_params('blob_amount', 1,      10,    1,     state.blob_amount);
   set_slider_params('tStep',       0.001,  0.02,  0.001, state.tStep);
 
@@ -71,8 +75,8 @@ function init () {
   let d2 = createVector(state.v3_x,       state.v0_y);
 
   blobCurves = [
-    new BlobCurve(a1, b1, c1, d1, state.blob_length, state.curves[0].size),
-    new BlobCurve(a2, b2, c2, d2, state.blob_length, state.curves[0].size),
+    new BlobCurve(a1, b1, c1, d1, state.curves[0].length, state.curves[0].size),
+    new BlobCurve(a2, b2, c2, d2, state.curves[1].length, state.curves[1].size),
   ];
 
   window.requestAnimationFrame(draw);
@@ -89,8 +93,8 @@ function draw() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // draw blobs
-  drawBlobTrail(blobCurves[0], state.curves[0]);
-  drawBlobTrail(blobCurves[1], state.curves[1]);
+  drawBlobTrail(blobCurves[0]);
+  drawBlobTrail(blobCurves[1]);
 
   // draw debug
   if (state.debug) {
@@ -110,23 +114,23 @@ function drawCircle(ctx, x, y, r, fillStyle, strokeStyle) {
   ctx.stroke();
 }
 
-function drawBlobs (ctx, blobs, blobState) {
+function drawBlobs (ctx, blobs, blobCurve) {
   for (var i = 0; i < blobs.length; i++) {
     drawCircle(
       ctx, 
       blobs[i].x, 
       blobs[i].y, 
-      blobs[i].intensity * blobState.size,
+      blobs[i].intensity * blobCurve.size,
       state.blobFill   ? 'rgba(0, 0, 0, '+blobs[i].intensity+')' : 'transparent',
       'rgba(0, 0, 0, '+blobs[i].intensity+')',
     );
   }
 }
 
-function drawBlobTrail(blobCurve, blobState) {
+function drawBlobTrail(blobCurve) {
   for (var i = 0; i < state.blob_amount; i++) {
     let blobs = blobCurve.getCurrentBlobs(state.t - i/state.blob_amount);
-    drawBlobs(ctx, blobs, blobState);
+    drawBlobs(ctx, blobs, blobCurve);
   }
 }
 

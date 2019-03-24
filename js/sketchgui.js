@@ -11,26 +11,14 @@ function set_url_parameter(prop, value, urlParams) {
  */
 function set_slider_params(propPath, min, max, step, value) {
     var sliders = document.getElementsByClassName('slider '+propPath);
-    
-    // set sliders differently for each curve instance
-    [instanceIndex, prop] = parsePropPath(propPath);
 
-    if (instanceIndex !== undefined) {
-        // set sliders based on instanceIndex
-        sliders[instanceIndex].min       = min;
-        sliders[instanceIndex].max       = max;
-        sliders[instanceIndex].step      = step;
-        sliders[instanceIndex].value     = value;
-    } else {
-        // set all sliders identical
-        for (var i = 0; i < sliders.length; i++) {
-            sliders[i].min       = min;
-            sliders[i].max       = max;
-            sliders[i].step      = step;
-            sliders[i].value     = value;
-        }    
-    }
-
+    // set all sliders identical
+    for (var i = 0; i < sliders.length; i++) {
+        sliders[i].min       = min;
+        sliders[i].max       = max;
+        sliders[i].step      = step;
+        sliders[i].value     = value;
+    }    
 }
 
 /*
@@ -42,7 +30,8 @@ function set_state(propPath, value) {
     
     // set js var value
     if (instanceIndex !== undefined) {
-        state.curves[instanceIndex][prop] = propVal;
+        // state.curves[instanceIndex][prop] = propVal;
+        blobCurves[instanceIndex][prop] = propVal;
     } else {
         state[prop] = propVal;
     }
