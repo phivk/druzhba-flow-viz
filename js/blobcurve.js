@@ -1,5 +1,6 @@
-function BlobCurve(a, b, c, d, blob_length, blob_size) {
+function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
   this.beziercurve = new BezierCurve(a, b, c, d);
+  this.amount = blob_amount;
   this.length = blob_length;
   this.size = blob_size;
   this.mouseOver = null;
@@ -22,7 +23,7 @@ function BlobCurve(a, b, c, d, blob_length, blob_size) {
       let blobPos = this.beziercurve.vpoints[index];
       let blob_intensity = 1 - (j / this.length);
       blobs.push({
-          x: blobPos.x, 
+          x: blobPos.x,
           y: blobPos.y,
           intensity: blob_intensity,         
       });

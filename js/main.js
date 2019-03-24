@@ -19,10 +19,12 @@ function init () {
   state = {
     curves: [
       {
+        amount: 2,
         size: 32,
         length: 32,
       },
       {
+        amount: 4,
         size: 16,
         length: 16,
       },
@@ -30,8 +32,6 @@ function init () {
     t: 0.0,
     tStep: 0.01,
     playing: true,
-    blob_length: 20,
-    blob_amount: 3,
     v0_x: 0.2 * windowWidth,
     v0_y: 0.8 * windowHeight,
     v3_x: 0.8 * windowWidth,
@@ -57,11 +57,12 @@ function init () {
   // state = Object.assign(state, urlState);
 
   // init GUI:       prop,         min,    max,   step,  value
+  set_slider_params('0.amount',    1,      20,    1,     state.curves[0].amount);
   set_slider_params('0.size',      1,      256,   1,     state.curves[0].size);
   set_slider_params('0.length',    1,      100,   1,     state.curves[0].length);
+  set_slider_params('1.amount',    1,      20,    1,     state.curves[1].amount);
   set_slider_params('1.size',      1,      256,   1,     state.curves[1].size);
   set_slider_params('1.length',    1,      100,   1,     state.curves[1].length);
-  set_slider_params('blob_amount', 1,      10,    1,     state.blob_amount);
   set_slider_params('tStep',       0.001,  0.02,  0.001, state.tStep);
 
   let a1 = createVector(state.v0_x,       state.v0_y);
@@ -75,8 +76,8 @@ function init () {
   let d2 = createVector(state.v3_x,       state.v0_y);
 
   blobCurves = [
-    new BlobCurve(a1, b1, c1, d1, state.curves[0].length, state.curves[0].size),
-    new BlobCurve(a2, b2, c2, d2, state.curves[1].length, state.curves[1].size),
+    new BlobCurve(a1, b1, c1, d1, state.curves[0].amount, state.curves[0].length, state.curves[0].size),
+    new BlobCurve(a2, b2, c2, d2, state.curves[1].amount, state.curves[1].length, state.curves[1].size),
   ];
 
   window.requestAnimationFrame(draw);
@@ -128,8 +129,8 @@ function drawBlobs (ctx, blobs, blobCurve) {
 }
 
 function drawBlobTrail(blobCurve) {
-  for (var i = 0; i < state.blob_amount; i++) {
-    let blobs = blobCurve.getCurrentBlobs(state.t - i/state.blob_amount);
+  for (var i = 0; i < blobCurve.amount; i++) {
+    let blobs = blobCurve.getCurrentBlobs(state.t - i/blobCurve.amount);
     drawBlobs(ctx, blobs, blobCurve);
   }
 }
