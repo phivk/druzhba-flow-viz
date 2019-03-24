@@ -1,9 +1,18 @@
 function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
+  this.cpOffsets = {};
   this.beziercurve = new BezierCurve(a, b, c, d);
   this.amount = blob_amount;
   this.length = blob_length;
   this.size = blob_size;
   this.mouseOver = null;
+
+  this.setCPOffsets = function () {
+    this.cpOffsets =  {
+      v1: p5.Vector.sub(this.beziercurve.v1, this.beziercurve.v0),
+      v2: p5.Vector.sub(this.beziercurve.v2, this.beziercurve.v3),
+    };
+  }
+  this.setCPOffsets();
 
   this.blobStyle = function (intensity) {
     noStroke();
@@ -151,10 +160,20 @@ function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
     if (this.mouseLocked !== null) {
       let newPosX = event.x - this.mouseOffsetX;
       let newPosY = event.y - this.mouseOffsetY;
-      
-      this.beziercurve[this.mouseLocked] = createVector(newPosX, newPosY);
-      this.beziercurve.calculatePoints();
+      this.setControlPoint(this.mouseLocked, newPosX, newPosY);
     }
+  }
+
+  this.setControlPoint = function (controlPointName, newPosX, newPosY) {
+    this.beziercurve[controlPointName] = createVector(newPosX, newPosY);
+    if (controlPointName == 'v0') {
+      this.beziercurve['v1'] = createVector(newPosX + this.cpOffsets['v1'].x, newPosY + this.cpOffsets['v1'].y);
+    } else if (controlPointName == 'v3') {
+      this.beziercurve['v2'] = createVector(newPosX + this.cpOffsets['v2'].x, newPosY + this.cpOffsets['v2'].y);
+    } else {
+      this.setCPOffsets();
+    }
+    this.beziercurve.calculatePoints();
   }
 }
 
