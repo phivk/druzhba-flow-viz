@@ -1,11 +1,14 @@
 function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
-  this.cpOffsets = {};
   this.beziercurve = new BezierCurve(a, b, c, d);
   this.amount = blob_amount;
   this.length = blob_length;
   this.size = blob_size;
   this.mouseOver = null;
+  this.playing = true;
+  this.t = 0.0;
+  this.tStep = 0.01;
 
+  this.cpOffsets = {};
   this.setCPOffsets = function () {
     this.cpOffsets =  {
       v1: p5.Vector.sub(this.beziercurve.v1, this.beziercurve.v0),
@@ -13,6 +16,17 @@ function BlobCurve(a, b, c, d, blob_amount, blob_length, blob_size) {
     };
   }
   this.setCPOffsets();
+
+  this.update = function () {
+    if (this.playing) {
+      this.t += this.tStep;
+      if (this.t > 1.0) this.t = 0.0;
+    }
+  }
+
+  this.togglePlaying = function () {
+    this.playing = !this.playing;
+  }
 
   this.blobStyle = function (intensity) {
     noStroke();

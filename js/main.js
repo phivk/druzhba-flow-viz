@@ -24,16 +24,15 @@ function init () {
         amount: 2,
         size: 32,
         length: 32,
+        tStep: 0.01,
       },
       {
         amount: 4,
         size: 16,
         length: 16,
+        tStep: 0.01,
       },
     ],
-    t: 0.0,
-    tStep: 0.01,
-    playing: true,
     v0_x: 0.2 * windowWidth,
     v0_y: 0.8 * windowHeight,
     v3_x: 0.8 * windowWidth,
@@ -62,10 +61,11 @@ function init () {
   set_slider_params('0.amount',    1,      20,    1,     state.curves[0].amount);
   set_slider_params('0.size',      1,      256,   1,     state.curves[0].size);
   set_slider_params('0.length',    1,      100,   1,     state.curves[0].length);
+  set_slider_params('0.tStep',     0.001,  0.02,  0.001, state.curves[0].tStep);
   set_slider_params('1.amount',    1,      20,    1,     state.curves[1].amount);
   set_slider_params('1.size',      1,      256,   1,     state.curves[1].size);
   set_slider_params('1.length',    1,      100,   1,     state.curves[1].length);
-  set_slider_params('tStep',       0.001,  0.02,  0.001, state.tStep);
+  set_slider_params('1.tStep',     0.001,  0.02,  0.001, state.curves[1].tStep);
 
   let a1 = createVector(state.v0_x,       state.v0_y);
   let b1 = createVector(state.v0_x + 200, state.v0_y);
@@ -86,10 +86,8 @@ function init () {
 }
 
 function draw() {
-  if (state.playing) {
-    state.t += state.tStep;
-    if (state.t > 1.0) state.t = 0.0;
-  }
+  blobCurves[0].update();
+  blobCurves[1].update();
   
   // clear canvas
   ctx.fillStyle = 'rgba(200, 200, 200, 0.3)';
@@ -142,7 +140,7 @@ function drawBlobs (ctx, blobs, blobCurve) {
 
 function drawBlobTrail(blobCurve) {
   for (var i = 0; i < blobCurve.amount; i++) {
-    let blobs = blobCurve.getCurrentBlobs(state.t - i/blobCurve.amount);
+    let blobs = blobCurve.getCurrentBlobs(blobCurve.t - i/blobCurve.amount);
     drawBlobs(ctx, blobs, blobCurve);
   }
 }
@@ -157,10 +155,12 @@ function windowResized() {
 
 function keyTyped() {
   if (key === ' ') {
-    state.playing = !state.playing;
+    blobCurves[0].togglePlaying();
+    blobCurves[1].togglePlaying();
   }
   if (key === 'p') {
-    state.playing = !state.playing;
+    blobCurves[0].togglePlaying();
+    blobCurves[1].togglePlaying();
   }
   else if (key === 'c') {
     state.debug = !state.debug;
