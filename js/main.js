@@ -168,6 +168,7 @@ function keyTyped() {
       state.mouseOver1 = null;
       state.mouseLocked1 = null;
     }
+    toggleGUI();
   }
   else if (key === 'f') {
     state.blobFill = !state.blobFill;

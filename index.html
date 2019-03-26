@@ -9,6 +9,7 @@
       .absolute {position: absolute;}
       .db {display: block;}
       .dib {display: inline-block;}
+      .dn {display: none;}
       .sans-serif {font-family: sans-serif;}
       .top-2 {top: 0.5rem;}
       .top-4 {top: 2rem;}
@@ -32,7 +33,7 @@
   </head>
   <body class="sans-serif" onload="init();">
     <canvas id="the-canvas"></canvas>
-    <div class="absolute top-2 left-2">
+    <div id="ui-controls" class="absolute top-2 left-2">
       <div class="dib v-top">
         <h3>Global</h3>
         <div>Press '<strong class="red">SPACE</strong>'/'<strong class="red">p</strong>' to toggle Animation</div>
@@ -53,8 +54,6 @@
         <div><span class="dib w3">Blob Length</span> <input type="range" class="dib slider 1.length" oninput="set_state('1.length', this.value)" onchange="set_state('1.length', this.value)"></div>
         <div><span class="dib w3">Blob Speed</span>  <input type="range" class="dib slider 1.tStep"  oninput="set_state('1.tStep',  this.value)" onchange="set_state('1.tStep',  this.value)"></div>
       </div>
-    </div>
-    <div class="absolute top-55 left-2">
     </div>
   </body>
 </html>

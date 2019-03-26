@@ -56,3 +56,9 @@ function parsePropPath(propPath) {
         console.error('propPath should contain at most two dots (.)')
     }
 }
+
+function toggleGUI() {
+    let uiSelector = '#ui-controls';
+    let uiElement = document.querySelector(uiSelector);
+    uiElement.classList.toggle('dn');
+}
